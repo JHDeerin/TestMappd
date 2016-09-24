@@ -17,6 +17,16 @@
                     return;
                 }
                 document.getElementById("result").innerHTML = "You have requested " + input;
+
+                
+            }
+
+            function getIPLocation(var input) {
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "http://ip-api.com/json/" + input,true);
+                xhr.send();
+                var jsonOutput = JSON.parse(xhr.responseText);
+                return jsonOutput;
             }
 
         </script>
