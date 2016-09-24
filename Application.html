@@ -21,11 +21,13 @@
                 document.getElementById("result").innerHTML = "You have requested " + input;
             }
 
-            function getLocation() {
+            function getIPLocation() {
                 var xhttp = new XMLHttpRequest();
-                xhttp.open("GET", "http://ip-api.com/xml/" + input, true);
+                xhttp.open("GET", "http://ip-api.com/json/" + input, true);
                 xhttp.send();
-                console.log(xhttp.status);
+                var jsonOutput = JSON.parse(xhttp.responseText);
+                console.log(jsonOutput);
+                return jsonOutput;
             }
 
         </script>
