@@ -46,34 +46,42 @@ Georgia-Tech-Hackathon/Application.html
 <!-- Latest compiled JavaScript -->
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEZMXXFMQV59ImtR6pDFlG98tjqLzXWDo&callback=initMap" async defer></script>
-
 </head>
 
 <body>
   <header>
-
-
     <script type = "text/javascript">
         var input;
+
         function displayOutput() {
             input = document.getElementById("userInput").value;
+            console.log(input);
             if (input.length === 0) {
                 alert("Please enter a valid input");
                 return;
             }
             document.getElementById("result").innerHTML = "You have requested " + input;
+
+            document.getElementById("result").innerHTML = "This, per the test, should show up";
+
+            var jsonOut = get();
+            document.getElementById("result").innerHTML = "You are currently at " + (jsonOut.status != 0) ? json.city : "invalid";
         }
         function get() {
-            xhttp.open("GET", "http://ip-api.com/xml", async);
-            xhttp.send(input);
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "http://ip-api.com/json/" + input + "?callback=get",true);
+            xhr.send();
+            console.log(xhr.status);
+
+            var jsonOutput = JSON.parse(xhr.responseText);
+            console.log(jsonOutput);
+            console.log(jsonOutput.status);
+
+            return jsonOutput;
         }
     </script>
-
   <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
   <button type="button" class="btn btn-primary">Primary</button>
-
-
 
         <h1 id = "result"> IP Address </h1>
         <input type = "text" id = "userInput" placeholder="Enter IP Address here"/>
