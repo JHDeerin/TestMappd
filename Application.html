@@ -20,6 +20,8 @@
                 }
                 document.getElementById("result").innerHTML = "You have requested " + input;
             }
+
+            var xhttp;
             function get() {
                 xhttp.open("GET", "http://ip-api.com/xml", async);
                 xhttp.send(input);
