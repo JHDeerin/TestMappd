@@ -5,13 +5,15 @@
         <meta name = "author" content = "" />
         <meta name = "description" content = "This web page will find and map all of the server locations through which a given URL is routed." />
         <meta name = "keywords" content = "Hackathon, Georgia Tech" />
+        <link rel="stylesheet" type="text/css" href="GThack.css">
         <title>
             HackGT Project
         </title>
 
         <script type = "text/javascript">
+            var input;
             function displayOutput() {
-                var input = document.getElementById("userInput").value;
+                input = document.getElementById("userInput").value;
                 if (input.length === 0) {
                     alert("Please enter a valid input");
                     return;
@@ -29,13 +31,20 @@
                 return jsonOutput;
             }
 
+            function getLocation() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.open("GET", "http://ip-api.com/xml/" + input, true);
+                xhttp.send();
+                console.log(xhttp.status);
+            }
+
         </script>
 
 </head>
 
 <body>
         <h1 id = "result"> IP Address </h1>
-        <input type = "text" id = "userInput" autofocus value ="Enter something here"/>
-        <input type = "submit" value = "Submit" onclick="displayOutput()"/>
+        <input type = "text" id = "userInput" placeholder= "Enter IP Address here"/>
+        <input type = "submit" value = "Submit" onclick= "displayOutput()"/>
 </body>
 </html>
