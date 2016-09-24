@@ -20,7 +20,7 @@
                 }
                 document.getElementById("result").innerHTML = "You have requested " + input;
 
-                
+
             }
 
             function getIPLocation(var input) {
@@ -29,6 +29,8 @@
                 xhr.send();
                 var jsonOutput = JSON.parse(xhr.responseText);
                 return jsonOutput;
+                var location = getIPLocation();
+                document.getElementById("result").innerHTML = "That IP is in " + location.status;
             }
 
             function getIPLocation() {
@@ -36,7 +38,6 @@
                 xhttp.open("GET", "http://ip-api.com/json/" + input, true);
                 xhttp.send();
                 var jsonOutput = JSON.parse(xhttp.responseText);
-                console.log(jsonOutput);
                 return jsonOutput;
             }
 
