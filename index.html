@@ -50,43 +50,26 @@ Georgia-Tech-Hackathon/Application.html
 
 <body>
   <header>
-    <script type = "text/javascript">
-        var input;
-
-        function displayOutput() {
-            input = document.getElementById("userInput").value;
-            console.log(input);
-            if (input.length === 0) {
-                alert("Please enter a valid input");
-                return;
-            }
-            document.getElementById("result").innerHTML = "You have requested " + input;
-
-            document.getElementById("result").innerHTML = "This, per the test, should show up";
-
-            var jsonOut = get();
-            document.getElementById("result").innerHTML = "You are currently at " + (jsonOut.status != 0) ? json.city : "invalid";
-        }
-        function get() {
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", "http://ip-api.com/json/" + input + "?callback=get",true);
-            xhr.send();
-            console.log(xhr.status);
-
-            var jsonOutput = JSON.parse(xhr.responseText);
-            console.log(jsonOutput);
-            console.log(jsonOutput.status);
-
-            return jsonOutput;
-        }
-    </script>
   <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
   <button type="button" class="btn btn-primary">Primary</button>
 
         <h1 id = "result"> IP Address </h1>
         <input type = "text" id = "userInput" placeholder="Enter IP Address here"/>
-        <input type = "submit" value = "Submit" onclick="displayOutput()"/>
+        <input type = "submit" id = 'inputButton' value = "Submit"/>
 
       </header>
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+      <script type = "text/javascript">
+        $("#inputButton").click(function(){
+            var ip = $("#userInput").val();
+            console.log(ip);
+
+            $.getJSON("http://ip-api.com/json/" + ip + "?callback=?", function(json){
+                console.log(json);
+            })
+        })
+      </script>
 </body>
 </html>
