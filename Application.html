@@ -21,18 +21,20 @@
                 document.getElementById("result").innerHTML = "You have requested " + input;
             }
 
-            var xhttp;
-            function get() {
-                xhttp.open("GET", "http://ip-api.com/xml" + input, async);
+            function getLocation() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.open("GET", "http://ip-api.com/xml/" + input, true);
                 xhttp.send();
+                console.log(xhttp.status);
             }
+
         </script>
 
 </head>
 
 <body>
         <h1 id = "result"> IP Address </h1>
-        <input type = "text" id = "userInput" placeholder="Enter IP Address here"/>
-        <input type = "submit" value = "Submit" onclick="displayOutput()"/>
+        <input type = "text" id = "userInput" placeholder= "Enter IP Address here"/>
+        <input type = "submit" value = "Submit" onclick= "displayOutput()"/>
 </body>
 </html>
