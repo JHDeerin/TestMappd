@@ -23,8 +23,8 @@
 
             var xhttp;
             function get() {
-                xhttp.open("GET", "http://ip-api.com/xml", async);
-                xhttp.send(input);
+                xhttp.open("GET", "http://ip-api.com/xml" + input, async);
+                xhttp.send();
             }
         </script>
 
