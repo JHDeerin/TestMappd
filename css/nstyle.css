@@ -11,11 +11,11 @@ body{
 }
 
 .ip-logo {
+  display: block;
   width:  675px;
   height: 168px;
   background-image: url("../Images/seagull.jpg");
-
-
+  margin: auto;
 }
 
 #content-container{
@@ -39,7 +39,6 @@ body{
 }
 
 #map {
-  justify-content: center;
   height: 600px;
   width: 800px;
   display: inline-flex;
