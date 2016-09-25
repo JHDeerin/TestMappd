@@ -35,8 +35,6 @@
         <script>
           var map;
 
-          Access-Control-Allow-Origin: <origin> | *;
-
           function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
               center: {lat: 0.0, lng: 0.0},
@@ -47,32 +45,54 @@
 
         <script type = "text/javascript">
           $("#inputButton").click(function(){
-              var webAddress = "www.twitter.com"; //placeholder
+              var webAddress = "www.microsoft.com"; //placeholder
               var ip = $("#userInput").val();
               console.log(ip);
 
-              if($.support.cors) {
-                  var servers = $.ajax({type: 'GET',
-                  url:  "http://pro.viewdns.info/traceroute/?domain=" + webAddress + "&apikey=37ff79af33301ae2b842a2698b1bc98105129426&output=json",
-                  dataType: "json",
-                  xhrFields: {withCredentials: true}});
-                  servers.done(function(data){
-                      console.log(servers);
-                  });
-              }
+                  $.ajax({
+                    url: "http://pro.viewdns.info/traceroute/?domain=" + webAddress + "&apikey=37ff79af33301ae2b842a2698b1bc98105129426&output=json",
+                    dataType: "json",
+                    function(server) {
+                        console.log(server[1].ip);
+                    }
+                });
+                  /*
+                  console.log("supports cors");
+                  var servers = $.get("http://pro.viewdns.info/traceroute/?domain=" + webAddress + "&apikey=37ff79af33301ae2b842a2698b1bc98105129426&output=json", function(server){
+                      console.log(server);
+                  });*/
 
               var location = $.getJSON("http://ip-api.com/json/" + ip + "?callback=?", function(json){
-
                   console.log(json);
                   var markerLatLng = {lat: json.lat, lng: json.lon};
+                  //image =
                   map.panTo(markerLatLng);
                   map.setZoom(8);
                   console.log(markerLatLng);
+
+                  var cityWeather = $.getJSON("http://api.openweathermap.org/data/2.5/weather?lat="+json.lat+"&lon="+json.lon+"&APPID=3c0dec929f348a0dd2c4ee3de2b8ba27");
+                  console.log(cityWeather);
+
+                  var infoString = '<div id="content">'+
+                      '<div id="siteNotice">'+
+                      '</div>'+
+                      '<h1 id="firstHeading" class="firstHeading">'+json.city+'</h1>'+
+                      '<div id="bodyContent">'+
+                      '<p><b>(Current Weather: )</b>' +
+                      '</div>'+
+                      '</div>';
+
+                  var infowindow = new google.maps.InfoWindow({
+                     content: infoString
+                  });
 
                   var marker = new google.maps.Marker({
                       position: markerLatLng,
                       map: map,
                       title: json.city
+                  });
+                  marker.addListener('click', function() {
+                      infowindow.open(map, marker);
                   });
               })
           })
