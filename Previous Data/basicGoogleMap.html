@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+      html, body {
+        height: 100%;
+        margin: 50;
+        padding: 0;
+      }
+      #map {
+        height: 600px;
+        width: 800px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <header>
+    <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+        <button type="button" class="btn btn-primary">Primary</button>
+
+              <h1 id = "result"> IP Address </h1>
+              <input type = "text" id = "userInput" placeholder="Enter IP Address here"/>
+              <input type = "submit" id = 'inputButton' value = "Submit"/>
+
+    </header>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEZMXXFMQV59ImtR6pDFlG98tjqLzXWDo&callback=initMap"
+        async defer></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+        <script>
+          var map;
+
+          function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+              center: {lat: 0.0, lng: 0.0},
+              zoom: 3
+            });
+          }
+        </script>
+
+        <script type = "text/javascript">
+          $("#inputButton").click(function(){
+              var webAddress = "www.microsoft.com"; //placeholder
+              var ip = $("#userInput").val();
+              console.log(ip);
+
+                  $.ajax({
+                    url: "http://pro.viewdns.info/traceroute/?domain=" + webAddress + "&apikey=37ff79af33301ae2b842a2698b1bc98105129426&output=json",
+                    dataType: "json",
+                    function(server) {
+                        console.log(server[1].ip);
+                    }
+                });
+                  /*
+                  console.log("supports cors");
+                  var servers = $.get("http://pro.viewdns.info/traceroute/?domain=" + webAddress + "&apikey=37ff79af33301ae2b842a2698b1bc98105129426&output=json", function(server){
+                      console.log(server);
+                  });*/
+
+              var location = $.getJSON("http://ip-api.com/json/" + ip + "?callback=?", function(json){
+                  console.log(json);
+                  var markerLatLng = {lat: json.lat, lng: json.lon};
+                  //image =
+                  map.panTo(markerLatLng);
+                  map.setZoom(8);
+                  console.log(markerLatLng);
+
+                  var cityWeather = $.getJSON("http://api.openweathermap.org/data/2.5/weather?lat="+json.lat+"&lon="+json.lon+"&APPID=3c0dec929f348a0dd2c4ee3de2b8ba27");
+                  console.log(cityWeather);
+
+                  var infoString = '<div id="content">'+
+                      '<div id="siteNotice">'+
+                      '</div>'+
+                      '<h1 id="firstHeading" class="firstHeading">'+json.city+'</h1>'+
+                      '<div id="bodyContent">'+
+                      '<p><b>(Current Weather: )</b>' +
+                      '</div>'+
+                      '</div>';
+
+                  var infowindow = new google.maps.InfoWindow({
+                     content: infoString
+                  });
+
+                  var marker = new google.maps.Marker({
+                      position: markerLatLng,
+                      map: map,
+                      title: json.city
+                  });
+                  marker.addListener('click', function() {
+                      infowindow.open(map, marker);
+                  });
+              })
+          })
+        </script>
+  </body>
+</html>
